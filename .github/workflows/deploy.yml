@@ -7,7 +7,7 @@ on:
         description: 'Optional. If you want it to have an additional specific version other than 99.9.9-SNAPSHOT, write it down.'
         required: false
 jobs:
-  Deploy-Campus-Dual-backend-archetype:
+  Deploy-Campus-Dual-Utils-library:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
