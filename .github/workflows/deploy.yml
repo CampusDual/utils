@@ -6,3 +6,40 @@ on:
         type: string
         description: 'Optional. If you want it to have an additional specific version other than 99.9.9-SNAPSHOT, write it down.'
         required: false
+jobs:
+  Deploy-Campus-Dual-backend-archetype:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CI_COMMIT_AUTHOR: ${{ secrets.CI_COMMIT_AUTHOR }}
+      CI_COMMIT_MAIL: ${{ secrets.CI_COMMIT_MAIL }}
+      MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+      MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+    steps:
+      - name: Get input parameters
+        run: |
+          echo "BRANCH=${{ github.ref }}" >> $GITHUB_ENV
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH }}
+          fetch-depth: 0
+      - name: Setup Java JDK and Maven
+        uses: ontimize/setup-java-maven-gitAction@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_CENTRAL_TOKEN
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Deploy archetype
+        run: |
+          mvn -B deploy -Pgenerate-version
+      - name: Deploy custom version archetype
+        if: "${{ github.event.inputs.custom-version != '' }}"
+        run: |
+          mvn -B versions:set -DnewVersion=${{ github.event.inputs.custom-version }} versions:commit
+          mvn -B deploy -Pgenerate-version
