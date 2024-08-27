@@ -12,7 +12,7 @@ Class of utilities to generate a random number, express a double with 2 decimal 
     <dependency>
         <groupId>com.campusdual</groupId>
         <artifactId>utils</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
