@@ -2,7 +2,7 @@
 
 # Utils
 
-Class of utilities to generate a random number, express a double with 2 decimal places, list lists with System.out.println(), list and select elements of a list and help to facilitate the input of data by console in a Java project.
+Class of utilities to generate a random number, express a double with 2 decimal places, list lists with System.out.println(), list and select elements of a list and help to facilitate the input of data by console in a Java project. Also provides a transitive dependency for Gson
 
 # Use
  Add the following dependency to your Maven project:
